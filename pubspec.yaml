@@ -46,7 +46,9 @@ dependencies:
 
   # セキュアストレージ
   flutter_secure_storage: ^9.2.2
-  win32: ^5.11.0
+
+  # 画面再起動用
+  shared_preferences: ^2.2.2
 
 
 

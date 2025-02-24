@@ -1,0 +1,70 @@
+# =============================
+# General
+# =============================
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# =============================
+# IDE / Editor
+# =============================
+# JetBrains / IntelliJ IDEA / Android Studio
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VS Code
+.vscode/
+
+# =============================
+# Flutter / Dart / Pub
+# =============================
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+
+# =============================
+# Symbolication / Obfuscation
+# =============================
+app.*.symbols
+app.*.map.json
+
+# =============================
+# Android Build Artifacts
+# =============================
+android/.gradle/
+android/app/debug/
+android/app/profile/
+android/app/release/
+android/local.properties
+
+# =============================
+# iOS / macOS Build Artifacts
+# =============================
+ios/.symlinks/
+ios/Flutter/
+ios/Pods/
+ios/Runner.xcworkspace/
+ios/Runner/GoogleService-Info.plist
+macos/.symlinks/
+macos/Pods/
+macos/Runner.xcworkspace/
+
+# =============================
+# Other
+# =============================
+webview.iml  # IntelliJ IDEA / Android Studio のプロジェクトファイル

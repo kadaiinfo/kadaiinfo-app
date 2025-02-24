@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "618805419357",
+    "project_id": "kadaiinfo-studio-app",
+    "storage_bucket": "kadaiinfo-studio-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:618805419357:android:bce0cf177d67cf1cbfdcb4",
+        "android_client_info": {
+          "package_name": "kadaiinfo.webview"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6VIFxDhjgYicAJah2C28AIShCFOpW5I0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

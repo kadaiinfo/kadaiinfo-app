@@ -68,7 +68,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
   Future<void> _initializeFirebase() async {
     FirebaseMessaging.instance.getToken().then((String? token) {
       if (token != null) {
-        //print("FirebaseMessaging token: $token");
         saveTokenToFirestore(token);
       }
     });
@@ -92,7 +91,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int currentTime = DateTime.now().millisecondsSinceEpoch;
     await prefs.setInt('last_active_time', currentTime);
-    //print("【アクティブ時間記録】$currentTime");
   }
 
   /// **アプリ再開時に一定時間が経過していたら case 0 に戻す**
@@ -102,17 +100,12 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
     int currentTime = DateTime.now().millisecondsSinceEpoch;
 
     if (lastActiveTime == null) {
-      //print("【初回起動】現在時刻を保存: $currentTime");
       await prefs.setInt('last_active_time', currentTime);
       return;
     }
 
-    //print("【チェック】前回のアクティブ時刻: $lastActiveTime");
-    //print("【チェック】現在の時刻: $currentTime");
-    //print("【チェック】経過時間: ${currentTime - lastActiveTime} ミリ秒");
 
     if (currentTime - lastActiveTime > timeoutDuration) {
-      //print("【自動遷移】10分以上経過: HomePage に戻る");
       setState(() {
         _currentIndex = 0; // case 0 に戻す
       });

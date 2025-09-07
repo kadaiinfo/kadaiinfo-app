@@ -15,10 +15,6 @@ class SettingsPage extends StatelessWidget {
           backgroundColor: Colors.white, // AppBarの背景色を白に設定
           iconTheme: IconThemeData(color: Colors.black54), // アイコンの色を設定
           elevation: 0, // AppBarの影をなくす
-          leading: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [],
-          ),
         ),
       ),
 
@@ -33,8 +29,8 @@ class SettingsPage extends StatelessWidget {
                 trailing: const Icon(Icons.launch),
                 onPressed: (BuildContext context) async {
                   const url = 'https://kadaiinfo.com/about-us';
-                  if (await canLaunch(url)) {
-                    await launch(url);
+                  if (await canLaunchUrl(Uri.parse(url))) {
+                    await launchUrl(Uri.parse(url));
                   }
                 },
               ),
@@ -43,8 +39,8 @@ class SettingsPage extends StatelessWidget {
                 trailing: const Icon(Icons.launch),
                 onPressed: (BuildContext context) async {
                   const url = 'https://kadaiinfo.com/contact';
-                  if (await canLaunch(url)) {
-                    await launch(url);
+                  if (await canLaunchUrl(Uri.parse(url))) {
+                    await launchUrl(Uri.parse(url));
                   }
                 },
               ),
@@ -53,8 +49,8 @@ class SettingsPage extends StatelessWidget {
                 trailing: const Icon(Icons.launch),
                 onPressed: (BuildContext context) async {
                   const url = 'https://kadaiinfo.com/privacy-policy';
-                  if (await canLaunch(url)) {
-                    await launch(url);
+                  if (await canLaunchUrl(Uri.parse(url))) {
+                    await launchUrl(Uri.parse(url));
                   }
                 },
               ),

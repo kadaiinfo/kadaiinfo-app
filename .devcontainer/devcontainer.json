@@ -1,0 +1,31 @@
+{
+    "name": "debian_flutter",
+    "workspaceFolder": "/home/developer/workspace",
+    "dockerComposeFile": [
+        "docker-compose.yml"
+    ],
+    "service": "flutter",
+    "remoteUser": "developer",
+    "overrideCommand": false,
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "files.autoSave": "onFocusChange",
+                "[dart]": {
+                    "editor.formatOnSave": true,
+                    "editor.formatOnType": true,
+                    "editor.rulers": [
+                        80
+                    ],
+                    "editor.selectionHighlight": false,
+                    "editor.tabCompletion": "onlySnippets",
+                    "editor.wordBasedSuggestions": "off"
+                }
+            },
+            "extensions": [
+                "Dart-Code.flutter",
+                "Dart-Code.dart-code"
+            ]
+        }
+    }
+}

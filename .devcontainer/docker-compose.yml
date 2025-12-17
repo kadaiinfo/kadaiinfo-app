@@ -1,0 +1,13 @@
+services:
+  flutter:
+    container_name: kadaiinfo_app_flutter
+    build:
+      context: ./
+    tty: true
+    volumes:
+      - ../:/home/developer/workspace
+    platform: linux/x86_64
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    network_mode: bridge

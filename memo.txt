@@ -1,0 +1,6 @@
+docker-compose -f .devcontainer/docker-compose.yml up -d
+echo 'org.gradle.unsafe.watch-fs=false' >> android/gradle.properties
+adb connect host.docker.internal:5555
+
+https://qiita.com/ozuaq/items/12bca991cbad9e18302e
+https://zenn.dev/flutternyumon/articles/2f1dae0396c948

@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'firebase_options.dart';
 import 'home_page.dart';
-import 'manaba_page.dart';
+import 'gourmet_page.dart';
 import 'contents_page.dart';
 import 'setting_page.dart';
 
@@ -126,7 +126,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
         _body = ContentsPage();
         break;
       case 2:
-        _body = ManabaPage();
+        _body = GourmetPage();
         break;
       case 3:
         _body = SettingsPage();
@@ -154,8 +154,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
           height: 60,
           items: <Widget>[
             Icon(Icons.home, size: 30),
-            Icon(Icons.widgets, size: 30),
-            Icon(Icons.school, size: 30),
+            Icon(Icons.menu_book, size: 30),
+            Icon(Icons.restaurant, size: 30),
             Icon(Icons.settings, size: 30),
           ],
           color: Colors.white,

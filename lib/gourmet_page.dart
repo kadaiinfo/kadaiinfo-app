@@ -6,13 +6,13 @@ import 'package:permission_handler/permission_handler.dart';
 import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 
-class ManabaPage extends StatefulWidget {
+class GourmetPage extends StatefulWidget {
   @override
-  _ManabaPageState createState() => _ManabaPageState();
+  _GourmetPageState createState() => _GourmetPageState();
 }
 
-class _ManabaPageState extends State<ManabaPage> {
-  final String manabaUrl = 'https://manaba.kic.kagoshima-u.ac.jp/';
+class _GourmetPageState extends State<GourmetPage> {
+  final String gourmetUrl = 'https://kadaiinfo-gourmet.com';
   late final InAppWebViewController _controller;
   final _storage = FlutterSecureStorage();
 
@@ -108,7 +108,7 @@ class _ManabaPageState extends State<ManabaPage> {
           } else {
             final credentials = snapshot.data!;
             return InAppWebView(
-              initialUrlRequest: URLRequest(url: WebUri(manabaUrl)), // 修正
+              initialUrlRequest: URLRequest(url: WebUri(gourmetUrl)), // 修正
               initialSettings: InAppWebViewSettings(
                 userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1 Accept-Language: ja-JP,ja;q=0.9,en;q=0.8',
                 supportZoom: true,

@@ -1,16 +1,77 @@
 # 環境構築
 
-## gitのインストール<br>
-gitをインストールしていない場合はインストールします。以下の手順に従ってインストルールを行ってください。<br>
+## gitのインストール
+gitをインストールしていない場合はインストールします。以下の手順に従ってインストルールを行ってください。
 https://kinsta.com/jp/knowledgebase/install-git/
 
-## flutterの環境構築方法<br>
+
+## flutterの環境構築方法（Docker環境）
+Dockerを使用すると、ローカル環境を汚さずに開発環境を構築できます。
+
+### 前提条件
+- Dockerがインストールされていること
+
+Dockerのインストール方法:
+- Mac: [Docker Desktop for Mac](https://www.docker.com/ja-jp/)
+- Windows: [Docker Desktop for Windows](https://www.docker.com/ja-jp/)
+
+### Docker環境の構築手順
+
+1. プロジェクトをクローン
+```bash
+git clone https://github.com/kadaiinfo/KADAI-INFO-STUDIO-APP.git
+cd KADAI-INFO-STUDIO-APP
+```
+
+2. Dockerコンテナをビルド・起動
+```bash
+cd .devcontainer
+docker-compose up -d --build
+```
+
+3. コンテナに入る
+```bash
+docker exec -it kadaiinfo_app_flutter /bin/bash
+```
+
+4. ワークスペースに移動して依存関係をインストール
+```bash
+cd workspace
+flutter pub get
+```
+
+5. Flutterの環境確認
+```bash
+flutter doctor
+```
+
+### Docker環境での起動方法
+コンテナ内でAndroidエミュレータを直接起動することはできませんが、以下の方法で開発できます:
+
+- **VS Code Dev Containers（推奨）**: VS Codeの拡張機能「Dev Containers」を使用すると、自動的にコンテナ内で開発できます
+- **ホスト側のエミュレータを使用**: ホスト側でエミュレータを起動し、コンテナからアクセスする
+
+### よく使うDockerコマンド
+```bash
+# コンテナの起動
+docker-compose up -d
+
+# コンテナの停止
+docker-compose down
+
+# コンテナに入る
+docker exec -it kadaiinfo_app_flutter /bin/bash
+
+# コンテナのログを確認
+docker-compose logs -f
+```
+
+
+## flutterの環境構築方法（ローカル環境）
 ### Windowsの場合<br>
-windowsをお使いの人は以下の記事を参考に環境構築を行なってください。<br>
 https://zenn.dev/heyhey1028/books/flutter-basics/viewer/getting_started_windows
 
 ### Macの場合<br>
-macをお使いの人は以下の記事を参考に環境構築を行なってください。<br>
 https://zenn.dev/heyhey1028/books/flutter-basics/viewer/getting_started_mac
 
 
@@ -26,6 +87,8 @@ https://zenn.dev/heyhey1028/books/flutter-basics/viewer/getting_started_mac
 % flutter pub get
 ```
 依存関係のインストールが完了したら、開発を始める準備が整いました。
+
+
 
 ### 起動方法<br>
 シミュレータが起動した状態で以下のコマンドで実行することで、プロジェクトをシミュレータ上で起動できます。

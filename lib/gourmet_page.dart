@@ -12,10 +12,9 @@ class GourmetPage extends StatefulWidget {
 }
 
 class _GourmetPageState extends State<GourmetPage> {
-  final String gourmetUrl = 'https://kadaiinfo-gourmet.com';
+  final String gourmetUrl = 'https://gourmet.kadaiinfo.com/';
   late final InAppWebViewController _controller;
   final _storage = FlutterSecureStorage();
-
 
   // 保存されているクレデンシャルを取得
   Future<Map<String, String>> _getCredentials() async {
@@ -36,7 +35,7 @@ class _GourmetPageState extends State<GourmetPage> {
       }
 
       String url = imageUrl.toString();
-      
+
       // 権限チェック
       var status = await Permission.photos.status;
       if (!status.isGranted) {
@@ -54,7 +53,7 @@ class _GourmetPageState extends State<GourmetPage> {
           Uint8List.fromList(response.bodyBytes),
           name: "saved_image_${DateTime.now().millisecondsSinceEpoch}",
         );
-        
+
         if (result['isSuccess']) {
           _showSnackBar('画像を保存しました');
         } else {
@@ -110,7 +109,8 @@ class _GourmetPageState extends State<GourmetPage> {
             return InAppWebView(
               initialUrlRequest: URLRequest(url: WebUri(gourmetUrl)), // 修正
               initialSettings: InAppWebViewSettings(
-                userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1 Accept-Language: ja-JP,ja;q=0.9,en;q=0.8',
+                userAgent:
+                    'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1 Accept-Language: ja-JP,ja;q=0.9,en;q=0.8',
                 supportZoom: true,
                 javaScriptEnabled: true,
                 preferredContentMode: UserPreferredContentMode.MOBILE,
@@ -127,7 +127,8 @@ class _GourmetPageState extends State<GourmetPage> {
                     action: () async {
                       try {
                         // 現在長押ししている要素の画像URLを取得
-                        var result = await _controller.evaluateJavascript(source: '''
+                        var result =
+                            await _controller.evaluateJavascript(source: '''
                           (function() {
                             var imgs = document.querySelectorAll('img');
                             for (var i = 0; i < imgs.length; i++) {
@@ -139,7 +140,7 @@ class _GourmetPageState extends State<GourmetPage> {
                             return null;
                           })();
                         ''');
-                        
+
                         if (result != null) {
                           await _saveImage(result);
                         } else {
@@ -163,7 +164,7 @@ class _GourmetPageState extends State<GourmetPage> {
                     navigator.languages = ['ja-JP', 'ja', 'en'];
                   }
                 """);
-                
+
                 if (url.toString().contains('manaba.kic.kagoshima-u.ac.jp')) {
                   await Future.delayed(Duration(seconds: 2)); // ページロード待機
 
@@ -173,7 +174,6 @@ class _GourmetPageState extends State<GourmetPage> {
                     document.getElementById('login-password').value = '${credentials['password']}';
                     document.getElementById('btn-login').click();
                   """);
-
                 }
               },
             );

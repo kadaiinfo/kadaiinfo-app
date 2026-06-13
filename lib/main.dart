@@ -10,6 +10,7 @@ import 'firebase_options.dart';
 import 'home_page.dart';
 import 'gourmet_page.dart';
 import 'contents_page.dart';
+import 'club_page.dart';
 import 'setting_page.dart';
 
 void main() async {
@@ -107,7 +108,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
       return;
     }
 
-
     if (currentTime - lastActiveTime > timeoutDuration) {
       setState(() {
         _currentIndex = 0; // case 0 に戻す
@@ -129,6 +129,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
         _body = GourmetPage();
         break;
       case 3:
+        _body = ClubPage();
+        break;
+      case 4:
         _body = SettingsPage();
         break;
       default:
@@ -156,7 +159,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
             Icon(Icons.home, size: 30),
             Icon(Icons.menu_book, size: 30),
             Icon(Icons.restaurant, size: 30),
-            Icon(Icons.settings, size: 30),
+            Icon(Icons.sports_baseball, size: 30),
           ],
           color: Colors.white,
           backgroundColor: Colors.white,

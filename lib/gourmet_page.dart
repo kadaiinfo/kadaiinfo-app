@@ -114,6 +114,8 @@ class _GourmetPageState extends State<GourmetPage> {
                 supportZoom: true,
                 javaScriptEnabled: true,
                 preferredContentMode: UserPreferredContentMode.MOBILE,
+                // iOSで画面端スワイプによる「戻る／進む」を有効化（Safari同様の挙動）
+                allowsBackForwardNavigationGestures: true,
               ),
               contextMenu: ContextMenu(
                 settings: ContextMenuSettings(

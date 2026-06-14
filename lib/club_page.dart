@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 class ClubPage extends StatefulWidget {
   @override
@@ -29,6 +30,12 @@ class _ClubPageState extends State<ClubPage> {
         },
       ))
       ..loadRequest(Uri.parse(clubUrl));
+
+    // iOSで画面端スワイプによる「戻る／進む」を有効化（Safari同様の挙動）
+    if (_controller.platform is WebKitWebViewController) {
+      (_controller.platform as WebKitWebViewController)
+          .setAllowsBackForwardNavigationGestures(true);
+    }
   }
 
   @override

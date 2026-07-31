@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
+import 'widgets/liquid_glass_top_bar.dart';
+
 class ClubPage extends StatefulWidget {
   @override
   _ClubPageState createState() => _ClubPageState();
@@ -42,27 +44,17 @@ class _ClubPageState extends State<ClubPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(40.0), // アプリバーの高さを設定
-        child: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0, // 影を消す
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_new, size: 20),
-            onPressed: () async {
-              if (await _controller.canGoBack()) {
-                _controller.goBack(); // WebViewの前のページに戻る
-              } else {
-                // WebViewで戻るページがない場合は、アプリの前の画面に戻る
-                if (Navigator.canPop(context)) {
-                  Navigator.pop(context);
-                }
-              }
-            },
-          ),
-        ),
-      ),
+      appBar: liquidGlassTopBar(context, onBack: _goBack),
       body: WebViewWidget(controller: _controller),
     );
+  }
+
+  Future<void> _goBack() async {
+    if (await _controller.canGoBack()) {
+      _controller.goBack(); // WebViewの前のページに戻る
+    } else if (mounted && Navigator.canPop(context)) {
+      // WebViewで戻るページがない場合は、アプリの前の画面に戻る
+      Navigator.pop(context);
+    }
   }
 }

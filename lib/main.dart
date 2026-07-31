@@ -12,6 +12,16 @@ import 'gourmet_page.dart';
 import 'contents_page.dart';
 import 'club_page.dart';
 import 'setting_page.dart';
+import 'widgets/liquid_glass.dart';
+import 'widgets/liquid_glass_nav_bar.dart';
+
+/// ボトムナビゲーションバーのデザイン切り替えスイッチ。
+///
+/// true  : Liquid Glass 風のフローティングバー（lib/widgets/liquid_glass_nav_bar.dart）
+/// false : 従来の CurvedNavigationBar
+///
+/// 元のデザインに戻したいときは、この 1 行を false にするだけでよい。
+const bool kUseLiquidGlassNavBar = true;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -126,7 +136,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
         _body = ContentsPage();
         break;
       case 2:
-        _body = GourmetPage();
+        _body = GourmetPage(onBack: () => _onNavTap(0));
         break;
       case 3:
         _body = ClubPage();
@@ -149,28 +159,64 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
           elevation: 0,
         ),
       ),
+      // Liquid Glass は背面をぼかすため、body をバーの下まで伸ばす必要がある。
+      extendBody: kUseLiquidGlassNavBar,
       body: _body,
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.only(bottom: 16),
-        child: CurvedNavigationBar(
-          index: _currentIndex,
-          height: 60,
-          items: <Widget>[
-            Icon(Icons.home, size: 30),
-            Icon(Icons.menu_book, size: 30),
-            Icon(Icons.restaurant, size: 30),
-            Icon(Icons.sports_baseball, size: 30),
-          ],
-          color: Colors.white,
-          backgroundColor: Colors.white,
-          buttonBackgroundColor: Colors.white,
-          animationDuration: Duration(milliseconds: 300),
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-        ),
+      bottomNavigationBar: _showNavBar
+          ? (kUseLiquidGlassNavBar
+              ? _buildLiquidGlassNavBar()
+              : _buildCurvedNavBar())
+          : null,
+    );
+  }
+
+  /// グルメページは全画面で見せたいのでナビゲーションを出さない。
+  /// 代わりにページ左上のガラスの戻るボタンからホームへ戻る。
+  bool get _showNavBar => _currentIndex != _gourmetIndex;
+
+  static const int _gourmetIndex = 2;
+
+  void _onNavTap(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
+  /// Liquid Glass 風のフローティングバー。
+  Widget _buildLiquidGlassNavBar() {
+    return LiquidGlassNavBar(
+      currentIndex: _currentIndex,
+      onTap: _onNavTap,
+      // ガラスの透明度。Apple が用意しているのは regular と clear の 2 段階だけで、
+      // clear のほうが背面がよく透ける。
+      glassStyle: LiquidGlassStyle.clear,
+      items: const <LiquidGlassNavItem>[
+        LiquidGlassNavItem(icon: Icons.home, label: 'ホーム'),
+        LiquidGlassNavItem(icon: Icons.menu_book, label: 'フリーペーパー'),
+        LiquidGlassNavItem(icon: Icons.restaurant, label: 'グルメ'),
+        LiquidGlassNavItem(icon: Icons.sports_baseball, label: 'サークル'),
+      ],
+    );
+  }
+
+  /// 変更前のデザイン。kUseLiquidGlassNavBar を false にするとこちらが使われる。
+  Widget _buildCurvedNavBar() {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 16),
+      child: CurvedNavigationBar(
+        index: _currentIndex,
+        height: 60,
+        items: <Widget>[
+          Icon(Icons.home, size: 30),
+          Icon(Icons.menu_book, size: 30),
+          Icon(Icons.restaurant, size: 30),
+          Icon(Icons.sports_baseball, size: 30),
+        ],
+        color: Colors.white,
+        backgroundColor: Colors.white,
+        buttonBackgroundColor: Colors.white,
+        animationDuration: Duration(milliseconds: 300),
+        onTap: _onNavTap,
       ),
     );
   }

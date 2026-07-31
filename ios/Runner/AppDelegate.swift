@@ -12,5 +12,13 @@ import UIKit
 
   func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
     GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
+
+    // Liquid Glass のプラットフォームビューを登録する。
+    if let registrar = engineBridge.pluginRegistry.registrar(forPlugin: "LiquidGlass") {
+      registrar.register(
+        LiquidGlassFactory(),
+        withId: LiquidGlassFactory.viewType
+      )
+    }
   }
 }

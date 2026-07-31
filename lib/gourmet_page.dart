@@ -6,7 +6,17 @@ import 'package:permission_handler/permission_handler.dart';
 import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 
+import 'widgets/liquid_glass_top_bar.dart';
+
 class GourmetPage extends StatefulWidget {
+  const GourmetPage({Key? key, required this.onBack}) : super(key: key);
+
+  /// 左上のガラスの戻るボタンを押したときの遷移先。ホームに戻す想定。
+  /// このページではボトムナビゲーションを出さないため、これが唯一の脱出口になる。
+  /// WebView 内の「前のページへ戻る」は画面端のスワイプで行える
+  /// （allowsBackForwardNavigationGestures を有効にしている）。
+  final VoidCallback onBack;
+
   @override
   _GourmetPageState createState() => _GourmetPageState();
 }
@@ -78,26 +88,21 @@ class _GourmetPageState extends State<GourmetPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(40.0),
-        child: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_new, size: 20),
-            onPressed: () async {
-              if (await _controller.canGoBack()) {
-                _controller.goBack();
-              } else {
-                if (Navigator.canPop(context)) {
-                  Navigator.pop(context);
-                }
-              }
-            },
-          ),
-        ),
+      // このページはボトムナビゲーションを出さないので、この戻るボタンが
+      // ホームへの唯一の導線になる。他ページの戻る（WebView の履歴を 1 つ戻る）と
+      // 動作が違うため、ホームのアイコンを並べて遷移先を示す。
+      appBar: liquidGlassTopBar(
+        context,
+        onBack: widget.onBack,
+        trailingIcon: Icons.home,
+        semanticLabel: 'ホームに戻る',
       ),
-      body: FutureBuilder<Map<String, String>>(
+      body: _buildWebView(),
+    );
+  }
+
+  Widget _buildWebView() {
+    return FutureBuilder<Map<String, String>>(
         future: _getCredentials(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -181,7 +186,6 @@ class _GourmetPageState extends State<GourmetPage> {
             );
           }
         },
-      ),
     );
   }
 }

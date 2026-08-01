@@ -11,9 +11,11 @@ import 'home_page.dart';
 import 'gourmet_page.dart';
 import 'contents_page.dart';
 import 'club_page.dart';
+import 'post_navigator.dart';
 import 'setting_page.dart';
 import 'widgets/liquid_glass.dart';
 import 'widgets/liquid_glass_nav_bar.dart';
+import 'widgets/liquid_glass_post_nav_bar.dart';
 
 /// ボトムナビゲーションバーのデザイン切り替えスイッチ。
 ///
@@ -55,6 +57,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
   int _currentIndex = 0;
   static const int timeoutDuration = 1800000; // 30分（ミリ秒）
 
+  /// 記事ページを開いている間だけボトムバーを前後ボタンに差し替えるための状態。
+  /// WebView を持つページをまたいで使い回すので、ここで 1 つだけ作る。
+  final PostNavigator _postNavigator = PostNavigator();
+
   @override
   void initState() {
     super.initState();
@@ -65,6 +71,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _postNavigator.dispose();
     super.dispose();
   }
 
@@ -130,16 +137,16 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
     Widget _body;
     switch (_currentIndex) {
       case 0:
-        _body = HomePage();
+        _body = HomePage(postNavigator: _postNavigator, onHome: _goHome);
         break;
       case 1:
-        _body = ContentsPage();
+        _body = ContentsPage(postNavigator: _postNavigator, onHome: _goHome);
         break;
       case 2:
         _body = GourmetPage(onBack: () => _onNavTap(0));
         break;
       case 3:
-        _body = ClubPage();
+        _body = ClubPage(postNavigator: _postNavigator, onHome: _goHome);
         break;
       case 4:
         _body = SettingsPage();
@@ -162,11 +169,39 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
       // Liquid Glass は背面をぼかすため、body をバーの下まで伸ばす必要がある。
       extendBody: kUseLiquidGlassNavBar,
       body: _body,
-      bottomNavigationBar: _showNavBar
-          ? (kUseLiquidGlassNavBar
-              ? _buildLiquidGlassNavBar()
-              : _buildCurvedNavBar())
-          : null,
+      bottomNavigationBar: _showNavBar ? _buildBottomBar() : null,
+    );
+  }
+
+  /// ボトムバー。記事ページを開いている間はタブではなく前後ボタンを出す。
+  Widget _buildBottomBar() {
+    if (!kUseLiquidGlassNavBar) {
+      return _buildCurvedNavBar();
+    }
+    return ListenableBuilder(
+      listenable: _postNavigator,
+      builder: (BuildContext context, Widget? _) {
+        return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 220),
+          child: _postNavigator.isPostPage
+              ? _buildPostNavBar()
+              : _buildLiquidGlassNavBar(),
+        );
+      },
+    );
+  }
+
+  /// 記事ページ用の前後ボタン。タブバーとは高さを揃えてあるので、
+  /// 入れ替わってもページの下端は動かない。
+  Widget _buildPostNavBar() {
+    return LiquidGlassPostNavBar(
+      key: const ValueKey<String>('post-nav-bar'),
+      hasNewer: _postNavigator.hasNewer,
+      hasOlder: _postNavigator.hasOlder,
+      isLoading: _postNavigator.isResolving,
+      onNewer: _postNavigator.goNewer,
+      onOlder: _postNavigator.goOlder,
+      glassStyle: LiquidGlassStyle.regular,
     );
   }
 
@@ -182,9 +217,22 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
     });
   }
 
+  /// 記事ページの左上のボタンからホームへ戻る。
+  /// 記事を開いている間はボトムがタブではなくなるので、ここが唯一の出口になる。
+  void _goHome() {
+    if (_currentIndex == 0) {
+      // すでにホームタブ。WebView が記事を出しているのでトップに戻す。
+      _postNavigator.goHome();
+    } else {
+      // タブを移ると WebView が作り直され、そのページの先頭から始まる。
+      _onNavTap(0);
+    }
+  }
+
   /// Liquid Glass 風のフローティングバー。
   Widget _buildLiquidGlassNavBar() {
     return LiquidGlassNavBar(
+      key: const ValueKey<String>('tab-nav-bar'),
       currentIndex: _currentIndex,
       onTap: _onNavTap,
       // ガラスの透明度。Apple が用意しているのは regular と clear の 2 段階だけ。

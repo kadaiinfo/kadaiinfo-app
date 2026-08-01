@@ -187,9 +187,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
     return LiquidGlassNavBar(
       currentIndex: _currentIndex,
       onTap: _onNavTap,
-      // ガラスの透明度。Apple が用意しているのは regular と clear の 2 段階だけで、
-      // clear のほうが背面がよく透ける。
-      glassStyle: LiquidGlassStyle.clear,
+      // ガラスの透明度。Apple が用意しているのは regular と clear の 2 段階だけ。
+      // clear は実機だと背面が透けすぎてラベルが読みにくくなるため regular にする
+      // （シミュレータは UIGlassEffect を忠実に再現しないので判断材料にしない）。
+      glassStyle: LiquidGlassStyle.regular,
       items: const <LiquidGlassNavItem>[
         LiquidGlassNavItem(icon: Icons.home, label: 'ホーム'),
         LiquidGlassNavItem(icon: Icons.menu_book, label: 'フリーペーパー'),
